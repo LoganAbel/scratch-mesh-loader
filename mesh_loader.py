@@ -1,14 +1,18 @@
 import numpy as np
-from trimesh import load as trimesh_load
+import trimesh
 
 indices = [1]
+with open("meshes.csv", "w") as f:
+	pass
+
 while 1:
 	inp = input('in: ')
 	if not inp:
 		break
-	mesh = trimesh_load(inp)
-	mesh.vertices -= mesh.center_mass
-	mesh.vertices /= np.amax(mesh.extents)
+	mesh = trimesh.load(inp)
+	center, radius = trimesh.nsphere.minimum_nsphere(mesh.vertices)
+	mesh.vertices -= center
+	mesh.vertices /= radius
 
 	data = mesh.vertices[mesh.faces].flatten().tolist()
 
